@@ -59,7 +59,23 @@ http://localhost:3000/todo/
     }
 }
 ```
+## Livesite Link (deployed in vercel) :
+#### Base Url :  https://todo-app-steel-mu-38.vercel.app/
+### Api's:
+#### 1. Create (Post) : https://todo-app-steel-mu-38.vercel.app/todo/add
+#### 2. Bulk add (Post) : https://todo-app-steel-mu-38.vercel.app/todo/bulk-add
+#### 3. All Todos (Get) : https://todo-app-steel-mu-38.vercel.app/todo/all-todos
+#### 4. Single Todo (Get) : https://todo-app-steel-mu-38.vercel.app/todo/${id}
+#### 5. Update (Patch) : https://todo-app-steel-mu-38.vercel.app/todo/${id}
+#### 6. Delete (Delete) : https://todo-app-steel-mu-38.vercel.app/todo/${id}
+#### 7. Add to archive (Patch) : https://todo-app-steel-mu-38.vercel.app/todo/archive/${id}
+#### 8. Restore (Patch) : https://todo-app-steel-mu-38.vercel.app/todo/restore/${id}
+#### 9. All archived (Get) : https://todo-app-steel-mu-38.vercel.app/todo/all-archived
+
+
 ## Postman collection : [Download](https://elements.getpostman.com/redirect?entityId=28380443-ed8b4f3d-f757-45c0-90fb-bebf6efa5d53&entityType=collection)
+
+## Postman collection with Livesite environment : [Download](https://elements.getpostman.com/redirect?entityId=28380443-ed8b4f3d-f757-45c0-90fb-bebf6efa5d53&entityType=collection)
 
 
 
