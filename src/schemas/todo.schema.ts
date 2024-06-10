@@ -4,16 +4,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export class ToDo {
   @Prop({ required: [true, 'Title is required'] })
   title: string;
-  @Prop()
+
+  @Prop({ required: [true, 'Description is required'] })
   description: string;
-  @Prop({ default: false })
-  completed: boolean;
+
   @Prop({ default: false })
   isDeleted: boolean;
   @Prop({ default: false })
   archived: boolean;
-  @Prop({ default: false })
-  restored: boolean;
 }
 
 export const todoSchema = SchemaFactory.createForClass(ToDo);

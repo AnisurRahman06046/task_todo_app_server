@@ -1,6 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './dtos/todo.dto';
+import { CreateTodoDto, UpdateTodoDto } from './dtos/todo.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -33,6 +42,28 @@ export class TodoController {
     return {
       status: HttpStatus.OK,
       message: 'Todo is fetched',
+      data: result,
+    };
+  }
+
+  //   edit todo
+  @Patch(':id')
+  async editTodo(@Param('id') id: string, @Body() payload: UpdateTodoDto) {
+    const result = await this.todoService.editTodo(id, payload);
+    return {
+      status: HttpStatus.OK,
+      message: 'Todo is updated',
+      data: result,
+    };
+  }
+
+  //   delete todo: soft delete
+  @Delete(':id')
+  async removeTodo(@Param('id') id: string) {
+    const result = await this.todoService.removeTodo(id);
+    return {
+      status: HttpStatus.OK,
+      message: 'Todo is deleted',
       data: result,
     };
   }
