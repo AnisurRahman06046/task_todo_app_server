@@ -14,9 +14,22 @@ import { CreateTodoDto, UpdateTodoDto } from './dtos/todo.dto';
 @Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
+
+  //   add todo
   @Post('add')
   async addTodo(@Body() payload: CreateTodoDto) {
     const result = await this.todoService.createTodo(payload);
+    return {
+      status: HttpStatus.CREATED,
+      message: 'Todo is added',
+      data: result,
+    };
+  }
+
+  //   bulk add
+  @Post('bulk-add')
+  async bulkAdd(@Body() payload: CreateTodoDto[]) {
+    const result = await this.todoService.bulkAdd(payload);
     return {
       status: HttpStatus.CREATED,
       message: 'Todo is added',
@@ -31,6 +44,17 @@ export class TodoController {
     return {
       status: HttpStatus.OK,
       message: 'All todos are fetched',
+      data: result,
+    };
+  }
+
+  //   all archived
+  @Get('all-archived')
+  async allArchived() {
+    const result = await this.todoService.allArchived();
+    return {
+      status: HttpStatus.OK,
+      message: 'Archived todos are fetched',
       data: result,
     };
   }
@@ -64,6 +88,28 @@ export class TodoController {
     return {
       status: HttpStatus.OK,
       message: 'Todo is deleted',
+      data: result,
+    };
+  }
+
+  //   add to archive
+  @Patch('archive/:id')
+  async addToArchive(@Param('id') id: string) {
+    const result = await this.todoService.addToArchive(id);
+    return {
+      status: HttpStatus.OK,
+      message: 'Added to archive',
+      data: result,
+    };
+  }
+
+  //   restore from archive
+  @Patch('restore/:id')
+  async restore(@Param('id') id: string) {
+    const result = await this.todoService.restore(id);
+    return {
+      status: HttpStatus.OK,
+      message: 'Todo is restored',
       data: result,
     };
   }

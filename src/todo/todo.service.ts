@@ -19,10 +19,20 @@ export class TodoService {
     return result;
   }
 
+  //   bulk add : adding array of objects
+  async bulkAdd(payload: CreateTodoDto[]) {
+    const result = await this.todoModel.insertMany(payload);
+    return result;
+  }
+
   //   get single todo
   async getSingleTodo(id: string) {
-    const result = await this.todoModel.findOne({ _id: id });
-    if (!result) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    const result = await this.todoModel.findOne({ _id: id, isDeleted: false });
+    if (!result)
+      throw new HttpException(
+        'Not found or may be deleted',
+        HttpStatus.NOT_FOUND,
+      );
     return result;
   }
 
@@ -36,7 +46,7 @@ export class TodoService {
 
   //   update todo
   async editTodo(id: string, payload: UpdateTodoDto) {
-    const todo = await this.todoModel.findById(id);
+    const todo = await this.todoModel.findOne({ _id: id, isDeleted: false });
     if (!todo)
       throw new HttpException('Todo is not found', HttpStatus.NOT_FOUND);
     const result = await this.todoModel.findByIdAndUpdate(id, payload, {
@@ -48,6 +58,8 @@ export class TodoService {
 
   //   delete todo : soft delete
   async removeTodo(id: string) {
+    const isExist = await this.todoModel.findOne({ _id: id, isDeleted: false });
+    if (!isExist) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     const result = await this.todoModel.findByIdAndUpdate(
       id,
       {
@@ -55,14 +67,14 @@ export class TodoService {
       },
       { new: true },
     );
-    if (!result) throw new NotFoundException('Not found');
+    if (!result) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     return result;
   }
 
   //   archive : add the todo to archive
   async addToArchive(id: string) {
-    const result = await this.todoModel.findByIdAndUpdate(
-      id,
+    const result = await this.todoModel.findOneAndUpdate(
+      { _id: id, isDeleted: false, archived: false },
       { archived: true },
       { new: true },
     );
