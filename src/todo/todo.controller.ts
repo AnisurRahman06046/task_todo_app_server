@@ -92,6 +92,17 @@ export class TodoController {
     };
   }
 
+  // hard delete
+  @Delete('delete/:id')
+  async deleteTodo(@Param('id') id: string) {
+    const result = await this.todoService.deleteTodo(id);
+    return {
+      status: HttpStatus.OK,
+      message: 'Todo is permanently deleted',
+      data: result,
+    };
+  }
+
   //   add to archive
   @Patch('archive/:id')
   async addToArchive(@Param('id') id: string) {

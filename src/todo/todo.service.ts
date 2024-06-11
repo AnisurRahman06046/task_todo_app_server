@@ -27,7 +27,11 @@ export class TodoService {
 
   //   get single todo
   async getSingleTodo(id: string) {
-    const result = await this.todoModel.findOne({ _id: id, isDeleted: false });
+    const result = await this.todoModel.findOne({
+      _id: id,
+      isDeleted: false,
+      archived: false,
+    });
     if (!result)
       throw new HttpException(
         'Not found or may be deleted',
@@ -68,6 +72,16 @@ export class TodoService {
       { new: true },
     );
     if (!result) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    return result;
+  }
+
+  // delete todo : hard delete
+  async deleteTodo(id: string) {
+    const isExist = await this.todoModel.findOne({ _id: id });
+    if (!isExist) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    const result = await this.todoModel.deleteOne({ _id: id });
+    if (!result)
+      throw new HttpException('Failed to delete', HttpStatus.BAD_REQUEST);
     return result;
   }
 
