@@ -87,6 +87,13 @@ export class TodoService {
 
   //   archive : add the todo to archive
   async addToArchive(id: string) {
+    const isArchived = await this.todoModel.findOne({
+      _id: id,
+      isDeleted: false,
+      archived: true,
+    });
+    if (isArchived)
+      throw new HttpException('already archived', HttpStatus.BAD_REQUEST);
     const result = await this.todoModel.findOneAndUpdate(
       { _id: id, isDeleted: false, archived: false },
       { archived: true },
